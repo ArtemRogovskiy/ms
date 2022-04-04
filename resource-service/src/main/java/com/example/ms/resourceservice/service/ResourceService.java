@@ -6,11 +6,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.ms.resourceservice.domain.Resource;
-import com.example.ms.resourceservice.exceptions.ResourceNotFoundException;
-import com.example.ms.resourceservice.repo.ResourceRepository;
+import com.example.ms.resourceservice.exception.ResourceNotFoundException;
+import com.example.ms.resourceservice.repository.ResourceRepository;
 
 @Service
 public class ResourceService {
@@ -22,13 +21,13 @@ public class ResourceService {
         this.resourceRepository = resourceRepository;
     }
 
-    public Resource createResource(String location) {
-        return resourceRepository.save(new Resource(location));
+    public Resource createResource(String key) {
+        return resourceRepository.save(new Resource(key));
     }
 
     public Resource getResource(Integer id) {
         return resourceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Resource does not exist"));
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     public List<Resource> getResources(Integer[] ids) {
@@ -51,9 +50,5 @@ public class ResourceService {
 
     public void deleteResource(Integer id) {
         resourceRepository.deleteById(id);
-    }
-
-    public void store(MultipartFile file) {
-
     }
 }

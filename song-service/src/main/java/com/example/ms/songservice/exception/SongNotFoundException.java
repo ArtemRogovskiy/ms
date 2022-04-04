@@ -1,4 +1,4 @@
-package com.example.ms.songservice.exceptions;
+package com.example.ms.songservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

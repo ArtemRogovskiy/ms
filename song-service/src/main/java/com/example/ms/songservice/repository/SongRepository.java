@@ -1,4 +1,4 @@
-package com.example.ms.songservice.repo;
+package com.example.ms.songservice.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RestResource;

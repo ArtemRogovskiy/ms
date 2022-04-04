@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,24 +20,22 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.example.ms.resourceservice.domain.Resource;
 
 @Service
-public class FileStore {
+public class FileStoreService {
 
     @Value("${config.aws.s3.bucket-name}")
     private String bucketName;
 
     private final AmazonS3 amazonS3;
-
     private final ResourceService resourceService;
 
     @Autowired
-    public FileStore(AmazonS3 amazonS3, ResourceService resourceService) {
+    public FileStoreService(AmazonS3 amazonS3, ResourceService resourceService) {
         this.amazonS3 = amazonS3;
         this.resourceService = resourceService;
     }
 
-    public void upload(String key,
-                       InputStream inputStream,
-                       Optional<Map<String, String>> optionalMetaData) {
+    public Integer upload(InputStream inputStream, Optional<Map<String, String>> optionalMetaData) {
+        String key = UUID.randomUUID().toString();
         ObjectMetadata objectMetadata = new ObjectMetadata();
         optionalMetaData.ifPresent(map -> {
             if (!map.isEmpty()) {
@@ -50,6 +49,8 @@ public class FileStore {
         } catch (AmazonServiceException e) {
             throw new IllegalStateException("Failed to upload the file", e);
         }
+        Resource resource = resourceService.createResource(key);
+        return resource.getId();
     }
 
     public InputStream download(int resourceId) {
