@@ -31,9 +31,9 @@ public class Song {
     private String resourceId;
 
     @Column
-    private Integer year;
+    private String year;
 
-    public Song(String name, String artist, String album, String length, String resourceId, Integer year) {
+    public Song(String name, String artist, String album, String length, String resourceId, String year) {
         this.name = name;
         this.artist = artist;
         this.album = album;
