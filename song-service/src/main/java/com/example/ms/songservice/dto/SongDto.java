@@ -10,5 +10,5 @@ public class SongDto {
     private final String album;
     private final String length;
     private final String resourceId;
-    private final Integer year;
+    private final String year;
 }
